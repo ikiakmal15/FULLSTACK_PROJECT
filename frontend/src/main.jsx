@@ -1,16 +1,10 @@
-import {BrowserRouter,Routes,Route }from"react-router-dom";
-import Home from"./pages/Home";
-import Login from"./pages/Login";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
 
-functionApp() {
-return (
-<BrowserRouter>
-<Routes>
-<Route path ="/"element={<Home/>}/>
-<Route path ="/login"element={<Login/>}/>
-</Routes>
-</BrowserRouter>
-  );
-}
-
-exportdefaultApp;
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
