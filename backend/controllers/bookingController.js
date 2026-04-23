@@ -28,3 +28,16 @@ exports.getUserBookings = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getOccupiedSchedules = async (req, res) => {
+    const { field_id, tanggal } = req.query;
+    try {
+        const [rows] = await db.execute(
+            'SELECT jam_mulai, jam_selesai FROM bookings WHERE field_id = ? AND tanggal = ? AND status != "cancelled"',
+            [field_id, tanggal]
+        );
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
