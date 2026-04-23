@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 const fieldRoutes = require('./routes/fieldRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
 require('dotenv').config();
 
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/fields', fieldRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.get('/', (req, res) => res.send('API Sewa Lapangan Running...'));
 
