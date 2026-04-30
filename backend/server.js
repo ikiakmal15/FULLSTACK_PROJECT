@@ -6,6 +6,9 @@ const fieldRoutes = require('./routes/fieldRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const discountRoutes = require('./routes/discountRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
 require('dotenv').config();
 
 const app = express();
@@ -17,6 +20,8 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/discounts', discountRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.get('/', (req, res) => res.send('API Sewa Lapangan Running...'));
 
