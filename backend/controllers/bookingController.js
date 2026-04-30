@@ -5,6 +5,21 @@ exports.createBooking = async (req, res) => {
         const { field_id, tanggal, jam_mulai, jam_selesai, total_harga } = req.body;
         const user_id = req.user.id; // Diambil dari token JWT
 
+        // 1. Validasi: Jangan pesan untuk waktu yang sudah lewat
+        const waktuSekarang = new Date();
+        const waktuBooking = new Date(tanggal + ' ' + jam_mulai);
+        if (waktuBooking < waktuSekarang) {
+            return res.status(400).json({ message: "Anda tidak bisa memesan untuk waktu yang sudah lewat!" });
+        }
+
+        const [field] = await db.execute('SELECT jam_buka, jam_tutup FROM fields WHERE id = ?', [field_id]);
+
+        if (jam_mulai < field[0].jam_buka || jam_selesai > field[0].jam_tutup) {
+            return res.status(400).json({ 
+                message: `Lapangan hanya beroperasi antara jam ${field[0].jam_buka} sampai ${field[0].jam_tutup}` 
+            });
+        }
+
         // 1. Cek apakah jam tersebut sudah ada yang booking
         const [isBooked] = await Booking.checkAvailability(field_id, tanggal, jam_mulai, jam_selesai);
         
