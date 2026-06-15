@@ -1,15 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api', // Mengarah ke backend Express port 5000
+    baseURL: 'http://localhost:5000/api', // Mengarah ke port endpoint backend kelompok BERES
 });
 
-// Interceptor untuk menyisipkan token JWT secara otomatis ke setiap request
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = Bearer ${token};
-    }
     return config;
 }, (error) => {
     return Promise.reject(error);
