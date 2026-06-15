@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 
-// Halaman placeholder untuk memverifikasi fungsionalitas layouting Hari ke-7
 const HomePlaceholder = () => (
     <div className="bg-white p-12 rounded-3xl shadow-sm border border-slate-100 text-center py-20">
         <h2 className="text-3xl font-black text-slate-800 tracking-tight">MYFIELD KATALOG</h2>
