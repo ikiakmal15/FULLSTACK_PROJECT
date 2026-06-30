@@ -1,36 +1,16 @@
+const bookingService = require('../services/bookingService');
 const Booking = require('../models/Booking');
 
 exports.createBooking = async (req, res) => {
     try {
-        const { field_id, tanggal, jam_mulai, jam_selesai, total_harga } = req.body;
-        const user_id = req.user.id; // Diambil dari token JWT
-
-        // 1. Validasi: Jangan pesan untuk waktu yang sudah lewat
-        const waktuSekarang = new Date();
-        const waktuBooking = new Date(tanggal + ' ' + jam_mulai);
-        if (waktuBooking < waktuSekarang) {
-            return res.status(400).json({ message: "Anda tidak bisa memesan untuk waktu yang sudah lewat!" });
-        }
-
-        const [field] = await db.execute('SELECT jam_buka, jam_tutup FROM fields WHERE id = ?', [field_id]);
-
-        if (jam_mulai < field[0].jam_buka || jam_selesai > field[0].jam_tutup) {
-            return res.status(400).json({ 
-                message: `Lapangan hanya beroperasi antara jam ${field[0].jam_buka} sampai ${field[0].jam_tutup}` 
-            });
-        }
-
-        // 1. Cek apakah jam tersebut sudah ada yang booking
-        const [isBooked] = await Booking.checkAvailability(field_id, tanggal, jam_mulai, jam_selesai);
-        
-        if (isBooked.length > 0) {
-            return res.status(400).json({ message: "Jadwal sudah terisi, silakan pilih jam lain." });
-        }
-
-        // 2. Simpan booking jika tersedia
-        await Booking.create({ user_id, field_id, tanggal, jam_mulai, jam_selesai, total_harga });
+        const payload = { ...req.body, user_id: req.user.id };
+        await bookingService.processNewBooking(payload);
         res.status(201).json({ message: "Booking berhasil dibuat! Menunggu pembayaran." });
     } catch (error) {
+        if (error.message.includes("lewat") || error.message.includes("beroperasi") || error.message.includes("terisi")) {
+            return res.status(400).json({ message: error.message });
+        }
+        if (error.message.includes("tidak ditemukan")) return res.status(404).json({ message: error.message });
         res.status(500).json({ error: error.message });
     }
 };
@@ -45,13 +25,42 @@ exports.getUserBookings = async (req, res) => {
 };
 
 exports.getOccupiedSchedules = async (req, res) => {
-    const { field_id, tanggal } = req.query;
     try {
-        const [rows] = await db.execute(
-            'SELECT jam_mulai, jam_selesai FROM bookings WHERE field_id = ? AND tanggal = ? AND status != "cancelled"',
-            [field_id, tanggal]
-        );
+        const [rows] = await Booking.findOccupied(req.query.field_id, req.query.tanggal);
         res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getAllBookings = async (req, res) => {
+    try {
+        const [rows] = await Booking.findAllWithDetails();
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.cancelBooking = async (req, res) => {
+    try {
+        await Booking.updateStatus(req.params.id, "cancelled");
+        res.json({ message: "Status pesanan berhasil diubah menjadi cancelled." });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.deleteBookingByUser = async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ message: "Sesi Anda habis, silakan login kembali." });
+
+        const [result] = await Booking.deleteByIdAndUser(req.params.id, userId);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Pesanan tidak ditemukan atau hak akses ditolak." });
+        }
+        res.json({ message: "Booking berhasil dibatalkan dan pesanan Anda telah dihapus!" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
