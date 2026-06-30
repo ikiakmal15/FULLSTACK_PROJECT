@@ -15,7 +15,7 @@ const Navbar = () => {
         }
     };
 
-    // Deteksi scroll untuk efek glassmorphic shadow seperti ArenaPro
+   
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 20) {
@@ -28,7 +28,7 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Deteksi perubahan login storage secara real-time
+    
     useEffect(() => {
         const handleStorageChange = () => {
             setToken(localStorage.getItem('token'));

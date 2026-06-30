@@ -5,7 +5,7 @@ const FieldForm = ({ formData, setFormData, onSubmit, editId, onCancel }) => {
     const file = e.target.files[0];
     setFormData({
       ...formData,
-      gambar: file // Menyimpan berkas file mentah ke dalam state gambar
+      gambar: file // 
     });
   };
 
