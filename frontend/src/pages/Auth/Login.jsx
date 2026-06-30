@@ -9,25 +9,25 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Mengontrol input form secara dinamis
+  
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  // Eksekusi kirim data login ke Backend via API
+  
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await api.post("/auth/login", credentials);
 
-      // Simpan token dan data user ke localStorage
+      
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      alert(Selamat datang kembali, ${response.data.user.nama}!);
+      alert(`Selamat datang kembali, ${response.data.user.nama}!`);
 
-      // Redirect rute berdasarkan role user
+      
       if (response.data.user.role === "admin") {
         navigate("/admin/dashboard");
       } else {
