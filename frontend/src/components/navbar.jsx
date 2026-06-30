@@ -53,21 +53,11 @@ const Navbar = () => {
     };
 
     return (
-        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-            isScrolled 
-                ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-md' 
-                : 'bg-white/40 backdrop-blur-md border-b border-transparent'
-        }`}>
-            <nav className="flex justify-between items-center w-full px-6 md:px-12 max-w-7xl mx-auto h-20">
-                
-                {/* LOGO BRAND: GANTI MENJADI BOOKINGSPACE */}
-                <Link to="/" className="flex items-center gap-2 group">
-                    <div className="p-2 bg-[#004ac6] text-white rounded-xl shadow-md group-hover:scale-110 transition-transform duration-200">
-                        <Trophy size={20} />
-                    </div>
-                    <span className="font-sans text-xl font-black text-[#004ac6] tracking-tight uppercase">
-                        Booking<span className="bg-gradient-to-r from-[#2563eb] to-[#6cf8bb] bg-clip-text text-transparent">Space</span>
-                    </span>
+        <nav className="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                {/* Brand Logo */}
+                <Link to="/" className="text-2xl font-black uppercase tracking-tighter text-blue-400 italic">
+                    MyField
                 </Link>
 
                 {/* DESKTOP NAVIGATION CENTER */}
