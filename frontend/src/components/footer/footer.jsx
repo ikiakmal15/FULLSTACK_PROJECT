@@ -6,7 +6,6 @@ const Footer = () => {
         <footer className="w-full py-12 bg-white border-t border-slate-200/60 mt-16 font-sans">
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
                 
-                {/* KOLOM 1: BRAND IDENTITY & SOSIAL MEDIA */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <div className="p-2 bg-[#004ac6] text-white rounded-xl shadow-sm">
@@ -32,7 +31,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* KOLOM 2: QUICK LINKS */}
                 <div className="space-y-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">Bantuan & Informasi</h4>
                     <ul className="space-y-2 text-xs font-medium text-slate-400">
@@ -43,7 +41,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* KOLOM 3: KATEGORI OLAHRAGA */}
                 <div className="space-y-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">Kategori Arena</h4>
                     <ul className="space-y-2 text-xs font-medium text-slate-400">
@@ -63,7 +60,6 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* COPYRIGHT LINE AT BOTTOM */}
             <div className="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-slate-100 text-center">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     &copy; {new Date().getFullYear()} BookingSpace System. All Rights Reserved.
