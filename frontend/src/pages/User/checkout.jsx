@@ -34,7 +34,7 @@ const Checkout = () => {
     if (!promoCode.trim()) return;
     try {
       const token = localStorage.getItem("token");
-      const headers = { Authorization: Bearer ${token} };
+      const headers = { Authorization: `Bearer ${token}` };
 
       // Menembak endpoint diskon baru kalian
       const response = await api.post("/discounts/check", { kode: promoCode }, { headers });
@@ -45,7 +45,7 @@ const Checkout = () => {
 
       setDiscountPercent(nilaiDiskon);
       alert(
-        Kupon Berhasil Diterapkan! Anda mendapatkan diskon sebesar ${nilaiDiskon}%.
+        `Kupon Berhasil Diterapkan! Anda mendapatkan diskon sebesar ${nilaiDiskon}%.`
       );
     } catch (error) {
       alert(
@@ -61,7 +61,7 @@ const Checkout = () => {
 
     try {
       const [jam, menit] = bookingData.jam_mulai.split(":");
-      const jamSelesaiHitung = ${String(Number(jam) + Number(bookingData.durasi)).padStart(2, "0")}:${menit};
+      const jamSelesaiHitung = `${String(Number(jam) + Number(bookingData.durasi)).padStart(2, "0")}:${menit}`;
 
       const payload = {
         field_id: field.id,
@@ -87,7 +87,11 @@ const Checkout = () => {
 
   const serviceFee = 5000;
   const courtFeeTotal = (field.harga_per_jam || 0) * bookingData.durasi;
+  
+  // Rumus matematika hitung nominal potongan berdasarkan persen (Contoh: 10/100 * total_harga)
   const discountAmount = (discountPercent / 100) * courtFeeTotal;
+  
+  // Hasil total akhir pembayaran setelah dikurangi nominal diskon
   const totalPayment = courtFeeTotal + serviceFee - discountAmount;
 
   return (
@@ -126,7 +130,7 @@ const Checkout = () => {
                       className="w-full h-full object-cover opacity-90"
                       src={
                         field.gambar 
-                          ? http://localhost:5000/uploads/${field.gambar}
+                          ? `http://localhost:5000/uploads/${field.gambar}`
                           : "https://via.placeholder.com/150"
                       }
                       alt="Field Thumbnail"
@@ -176,7 +180,7 @@ const Checkout = () => {
                 <div className="space-y-2">
                   <label
                     onClick={() => setPaymentMethod("va")}
-                    className={relative flex items-center p-4 rounded-xl cursor-pointer transition-all border-2 ${paymentMethod === "va" ? "border-[#004ac6] bg-blue-50/20" : "border-slate-100 hover:border-blue-200"}}
+                    className={`relative flex items-center p-4 rounded-xl cursor-pointer transition-all border-2 ${paymentMethod === "va" ? "border-[#004ac6] bg-blue-50/20" : "border-slate-100 hover:border-blue-200"}`}
                   >
                     <div className="flex items-center gap-4 w-full">
                       <div className="w-10 h-10 bg-blue-50 text-[#004ac6] rounded-xl flex items-center justify-center">
@@ -186,7 +190,7 @@ const Checkout = () => {
                         <p className="text-xs font-black text-slate-800 uppercase tracking-wide">Virtual Account Transfer</p>
                         <p className="text-[11px] font-medium text-slate-400">Transfer via Bank BCA atau BSI</p>
                       </div>
-                      <div className={w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "va" ? "border-[#004ac6]" : "border-slate-200"}}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "va" ? "border-[#004ac6]" : "border-slate-200"}`}>
                         {paymentMethod === "va" && <div className="w-2.5 h-2.5 bg-[#004ac6] rounded-full"></div>}
                       </div>
                     </div>
@@ -213,7 +217,7 @@ const Checkout = () => {
                 <div className="space-y-2">
                   <label
                     onClick={() => setPaymentMethod("ewallet")}
-                    className={relative flex items-center p-4 rounded-xl cursor-pointer transition-all border-2 ${paymentMethod === "ewallet" ? "border-[#004ac6] bg-blue-50/20" : "border-slate-100 hover:border-blue-200"}}
+                    className={`relative flex items-center p-4 rounded-xl cursor-pointer transition-all border-2 ${paymentMethod === "ewallet" ? "border-[#004ac6] bg-blue-50/20" : "border-slate-100 hover:border-blue-200"}`}
                   >
                     <div className="flex items-center gap-4 w-full">
                       <div className="w-10 h-10 bg-slate-50 text-slate-500 rounded-xl flex items-center justify-center">
@@ -222,7 +226,7 @@ const Checkout = () => {
                       <div className="flex-1">
                         <p className="text-xs font-black text-slate-800 uppercase tracking-wide">E-Wallet (GoPay, ShopeePay, Dana)</p>
                       </div>
-                      <div className={w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "ewallet" ? "border-[#004ac6]" : "border-slate-200"}}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "ewallet" ? "border-[#004ac6]" : "border-slate-200"}`}>
                         {paymentMethod === "ewallet" && <div className="w-2.5 h-2.5 bg-[#004ac6] rounded-full"></div>}
                       </div>
                     </div>
