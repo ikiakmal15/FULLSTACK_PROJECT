@@ -45,7 +45,7 @@ const ManageFields = () => {
     dataPayload.append("jam_tutup", formData.jam_tutup);
     dataPayload.append("harga_per_jam", formData.harga_per_jam);
     
-    // Masukkan file gambar jika admin memilih berkas baru di form
+    
     if (formData.gambar) {
       dataPayload.append("gambar", formData.gambar); 
     }
@@ -57,7 +57,7 @@ const ManageFields = () => {
       },
     };
       if (editId) {
-        // 🔥 Pastikan variabel dataPayload dan config dioper ke sini pas edit
+        
         await api.put(`/fields/${editId}`, dataPayload, config);
         alert("Lapangan berhasil diperbarui!");
       } else {
@@ -81,7 +81,7 @@ const ManageFields = () => {
       jam_buka: field.jam_buka,
       jam_tutup: field.jam_tutup,
       harga_per_jam: field.harga_per_jam || "",
-      gambar: null, // Biarkan null saat edit, kecuali admin ingin mengganti fotonya kembali
+      gambar: null, 
     });
     setIsFormOpen(true);
   };
@@ -98,7 +98,7 @@ const ManageFields = () => {
     }
   };
 
-  // 🔥 PERBAIKAN 3: Bersihkan state gambar di fungsi resetForm
+  
   const resetForm = () => {
     setFormData({
       nama_lapangan: "",
